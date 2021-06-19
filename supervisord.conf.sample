@@ -1,0 +1,13 @@
+[program:whoami]
+command=gunicorn --reload --reload-extra-file w.cfg --reload-extra-file templates/layout.html --reload-extra-file templates/index.html --reload-extra-file templates/404.html --reload-extra-file templates/script.js main:app
+numprocs=1
+umask=022
+autostart=true
+autorestart=true
+startsecs=10
+startretries=0
+stdout_logfile=log/stdout.log
+stderr_logfile=log/stderr.log
+stdout_logfile_backups=3
+stderr_logfile_backups=3
+stderr_events_enabled=true

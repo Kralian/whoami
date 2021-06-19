@@ -1,0 +1,43 @@
+.nowrap {
+  white-space: nowrap;
+}
+
+.vertical-align {
+  vertical-align: top;
+}
+
+.row-striped:nth-of-type(odd){
+  background-color: #efefef;
+}
+
+.row-striped:nth-of-type(even){
+  background-color: #ffffff;
+}
+
+@media (max-width: 48em) {
+  table .btn {
+    font-size: 0.75rem;
+    font-size: 3.5vw;
+  }
+}
+
+table, th, td {
+  border: 1px solid black;
+  padding: 8px;
+}
+th#cidr {
+  text-align: center;
+}
+th#aspath {
+  text-align: right;
+}
+td#cidr {
+  text-align: right;
+}
+td#aspath {
+  text-align: right;
+}
+tr#data:hover {
+  color: #ffffff;
+  background-color: #444444;
+}

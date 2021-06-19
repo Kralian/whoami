@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}w.7f.dk{% endblock %}</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}" async defer>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/extra.css') }}" async defer>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}" async defer>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}" async defer>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}" async defer>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+    <script src="{{ url_for('dynamic', scriptname='script.js') }}"></script>
+    {% endblock%}
+  </head>
+  <body>
+    {% block body %}
+    <div class="container-fluid">
+      {% block ipheader %}
+      <div class="row">
+        <div class="col-md-4" id="v4div">
+          IPv4 <span id="v4info">investigating...</span>
+        </div>
+        <div class="col-md-4" id="v6div">
+          IPv6 <span id="v6info">investigating...</span>
+        </div>
+        <div class="col-md-2" id="extrainfo">
+          [...]
+        </div>
+      </div>
+      {% endblock %}
+    </div>
+    <div class="jumbotron">
+      <div class="container-fluid">
+        {% block ipinfo %}
+        <div class="row">
+          <div class="col-md-8">
+            Hello, you connected here from {{ info.IP }}<br>
+            <br>
+            Your preferred IP {{ info.IP }} comes from<br>
+            <br>
+            <ul>
+            {% if info.origins %}
+            {% for origin in info.origins %}
+            <li>{{ origin.CIDR }} by {{ origin.ASN|upper() }} country code {{ origin.CC }} in the {{ origin.RIR }} region<br>
+            {% endfor %}
+            {% else %}
+            <li>no known origin
+            {% endif %}
+            </ul>
+            It's seen via,<br>
+            <br>
+            <table>
+            <tr><th id="cidr">CIDR</th><th id="aspath">AS Path</th></tr>
+            {% if info.origins and info.peers %}
+            {% for origin in info.origins %}
+            {% for peer in info.peers %}
+            <tr id="data">
+              <td id="cidr">
+                {{ peer.CIDR }}
+              </td>
+              <td id="aspath">
+               {{ origin.ASN }} {{ peer.ASPATH }}
+              </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+            {% else %}
+            <tr id="data">
+              <td id="cidr">
+                -
+              </td>
+              <td id="aspath">
+               no paths, should not be seen
+              </td>
+            </tr>
+            {% endif %}
+            </table>
+            <br>
+            <br>
+            Here are some magic links on this site.<br>
+            <br>
+            HTTP / <a href="http://{{ info.host }}">this page with no HTTPS :-(</a><br>
+            HTTPS / <a href="https://{{ info.host }}">this page with HTTPS :-)</a><br>
+            <br>
+            Vx / <a href="{{ info.scheme }}://w.7f.dk">this page with either protocol :-)</a><br>
+            V4 / <a href="{{ info.scheme }}://w4.7f.dk">this page forced to v4 content :-)</a><br>
+            V6 / <a href="{{ info.scheme }}://w6.7f.dk">this page forced to v6 content :-)</a><br>
+            <br>
+            Magic addiotions to {{ info.scheme }}://{{ info.host }}
+            <ul>
+              <li>/asc <a href="{{ info.scheme }}://{{ info.host }}/asc">ascii version with just the IP.</a>
+              <li>/json <a href="{{ info.scheme }}://{{ info.host }}/json">json output with the info in use here.</a>
+            </ul>
+            both of those can of course have {{ info.host }} as either w.7f.dk, w4.7f.dk or w6.7f.dk to .. force/unforce it around
+          </div>
+          <div class="col-md-4" id="extratext">
+	          <h3>Right now, dunno what to put here</h3>
+          </div>
+        </div>
+        {% endblock %}
+      </div>
+    </div>
+    {% endblock %}
+    {% block footer %}
+    {% endblock %}
+  </body>
+</html>
